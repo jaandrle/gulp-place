@@ -31,23 +31,30 @@ module.exports= function({ variable_eval= ()=> "", filesCleaner= content=> conte
             case "file":            return fileHandler(replaceHelper, false, true, folder, fileNameVarHandler(name), spaces);
             case "file_if_exists":  return fileHandler(replaceHelper, false, false, folder, fileNameVarHandler(name), spaces);
             case "file_once":       return fileHandler(replaceHelper, true, true, folder, fileNameVarHandler(name), spaces);
-            case "file_module":     return parseModule(replaceHelper, true, true, folder, fileNameVarHandler(name), spaces+intendantion);
-            case "file_namespace":  return parseNamespace(replaceHelper, true, true, folder, fileNameVarHandler(name), spaces+intendantion);
+            case "js_bundle":       return parseJSBundle(replaceHelper, folder, fileNameVarHandler(name), spaces+intendantion);
             case "variable":        return spaces+string_wrapper+variable_eval(name)+string_wrapper+semicol+jshint_global;
             case "eval":            return (variable_eval(name), spaces+jshint_global);
             case "eval_out":        return spaces+variable_eval(name)+semicol+jshint_global;
         }
     }
-    function parseModule(replaceHelper, once, strict, folder, name, spaces){
-        const content= fileHandler(replaceHelper, once, strict, folder, name, spaces);
-        if(!content) return "";
-        return require("./templates/module")(content);
+    function parseJSBundle(replaceHelper, folder, options, spaces){
+        const { src, name: name_candidate, type= "namespace", depends= [] }= JSON.parse(options) || {};
+        if(!src) return "";
+        const name= name_candidate || name_candidate.slice(name_candidate.lastIndexOf("/")+1, name_candidate.indexOf("."));
+        const content_candidate= fileHandler(replaceHelper, true, true, folder, src, spaces);
+        if(!content_candidate) return "";
+        const { content, exports }= parseModuleNamespaceExports(content_candidate);
+        return require("./templates/"+type)(name, content, exports, depends);
     }
-    function parseNamespace(replaceHelper, once, strict, folder, name, spaces){
-        const namespace_name= name.slice(name.lastIndexOf("/")+1, name.indexOf("."));
-        const content= fileHandler(replaceHelper, once, strict, folder, name, spaces);
-        if(!content) return "";
-        return require("./templates/namespace")(namespace_name, content);
+    function parseModuleNamespaceExports(content_candidate){
+        let exports= new Set();
+        const handleExportReplace= function(match, type, name){
+            exports.add(name);
+            return `${type} ${name}`;
+        };
+        const content= content_candidate
+            .replace(/export (function|const|var|let|class) ([^ \=\-\+\(]+)/g, handleExportReplace);
+        return { content, exports: Array.from(exports) };
     }
     function parseFile(replaceHelper, file_data){
         return file_data.replace(gulp_place_regex, replaceHelper(parseFileHandler));

@@ -1,2 +1,1 @@
-var test= "TEST";
-gulp_place("body.js", "file_module")("MyModule", "test");
+gulp_place('{ "src": "body.js", "name": "MyModule", "type": "module" }', "js_bundle");
