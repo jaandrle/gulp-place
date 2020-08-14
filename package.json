@@ -7,6 +7,14 @@
         "test": "cd ./test && gulp test && exit 0"
     },
     "author": "Jan Andrle <andrle.jan@centrum.cz>",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/jaandrle/gulp-place.git"
+    },
+    "bugs": {
+        "url": "https://github.com/jaandrle/gulp-place/issues"
+    },
+    "homepage": "https://github.com/jaandrle/gulp-place",
     "license": "MIT",
     "keywords": [
         "gulp",
