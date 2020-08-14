@@ -70,7 +70,7 @@ module.exports= function({ variable_eval= ()=> "", filesCleaner= content=> conte
     function parseGlob(once, main_folder, match, spaces){
         const [ name, last_slash ] = match;
         let [ sub_folder, files ] = [ name.substr(0, last_slash), name.substr(last_slash) ];
-        if(!last_slash) return "";
+        //if(!last_slash) return "";
         files= new RegExp(files
             .replace(/[\.\(\)]/g, m=> "\\"+m)
             .replace(/\*/g, ".*")
