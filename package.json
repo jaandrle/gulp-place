@@ -1,5 +1,5 @@
 {
-    "name": "@jaandrle/gulp-place",
+    "name": "gulp-place",
     "version": "1.5.3",
     "description": "PHP require like concating syntax for gulp (primary for JavaScript files).",
     "main": "index.js",
