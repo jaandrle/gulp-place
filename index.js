@@ -6,7 +6,7 @@ module.exports= function({ variable_eval= ()=> "", filesCleaner= content=> conte
     let /* shared vars */
         files_added= new Set();
     const /* shared consts */
-        gulp_place_regex= /( *)gulp_place\(\s*(?:\"|\')([^\"\']+)(?:\"|\')(?:\s*,\s*(?:\"|\')([^\"\']+)(?:\"|\'))?\s*\)(;?)([^\r\n]*\/\*[^\*]*\*\/)?/g,
+        gulp_place_regex= /(?<spaces> *)gulp_place\(\s*(\"(?<name_1>[^\"]+)\"|\'(?<name_2>[^\']+)\')(?:\s*,\s*(?:\"|\')(?<type>[^\"\']+)(?:\"|\'))?\s*\)(?<semicol>;?)(?<jshint_global>[^\r\n]*\/\*[^\*]*\*\/)?/g,
         folder_glob_reg= /\*\*\/$/g,
         folder_deep_glob_reg= /\*\*\/\*\*\/$/g;
     const
@@ -14,8 +14,11 @@ module.exports= function({ variable_eval= ()=> "", filesCleaner= content=> conte
             parseGlob(is_once, folder, ((name)=>[name, name.lastIndexOf("/")+1])(fileNameVarHandler(name)), spaces);
     
     return function gulp_place({folder= "js/", string_wrapper= '"'}= {}){
-        const replaceHelper= fun=> (full_match, spaces= "", name= false, type="file", semicol= "", jshint_global= "")=>
-            fun({ folder, string_wrapper, full_match, spaces, name, type, semicol, jshint_global, replaceHelper });
+        const replaceHelper= fun=> function(...args){
+            const full_match= args.shift();
+            const { spaces= "", name_1= false, name_2= false, type="file", semicol= "", jshint_global= "" }= args.pop();
+            return fun({ folder, string_wrapper, full_match, spaces, name: name_1||name_2, type, semicol, jshint_global, replaceHelper });
+        };
         
         return gulp_replace(gulp_place_regex, replaceHelper(parseFileHandler));
     };
