@@ -5,7 +5,7 @@ PHP require like concating syntax for gulp (primary for JavaScript files).
 Library is tested very vell also in production enviroment, but till now I haven't specific place for focusing only to this library.
 
 ## Approach
-1. `npm install gulp-place`
+1. `npm install git+https://github.com/jaandrle/gulp-place.git`
 1. In 'gulpfile.js': `const gulpPlace= require("gulp-place");`
 1. In gulp task: `const localPlace= gulpPlace({ variable_eval: function, filesCleaner: function })`→ define function for evaluating variables (`eval`) and function for cleaning e.g. jshint comments
 1. In '.pipe': `.pipe(localPlace({ folder: string, string_wrapper: string }))`→ define root folder (against gulps cwd) and string quotes (default ")

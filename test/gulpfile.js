@@ -5,5 +5,5 @@ const gulpPlace= require("../index.js");
 gulp.task("test", function(cb){
     return gulp.src("./src/main.js")
         .pipe(gulpPlace({ variable_eval: ()=> "var output" })({ folder: "src/", string_wrapper: "~" }))
-        .pipe(gulp.dest("./bin/main.js"));
+        .pipe(gulp.dest("./bin"));
 });
