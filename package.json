@@ -1,0 +1,36 @@
+{
+    "name": "gulp-place",
+    "version": "1.5.3",
+    "description": "PHP require like concating syntax for gulp (primary for JavaScript files).",
+    "main": "index.js",
+    "scripts": {
+        "test": "cd ./test && gulp test && exit 0"
+    },
+    "author": "Jan Andrle <andrle.jan@centrum.cz>",
+    "license": "MIT",
+    "keywords": [
+        "gulp",
+        "import",
+        "bundler",
+        "javascript"
+    ],
+    "dependencies": {
+        "gulp": "^4.0.2",
+        "gulp-replace": ">=1.0.0"
+    },
+    "devDependencies": {
+        "jshint": "^2.10.3"
+    },
+    "jshintConfig": {
+        "esversion": 6,
+        "node": "true",
+        "undef": "true",
+        "latedef": "true",
+        "maxparams": 6,
+        "maxdepth": 2,
+        "maxcomplexity": 13,
+        "globals": {
+            "gulp_place": false
+        }
+    }
+}
