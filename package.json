@@ -4,7 +4,7 @@
     "description": "PHP require like concating syntax for gulp (primary for JavaScript files).",
     "main": "index.js",
     "scripts": {
-        "test": "cd ./test && gulp && exit 0"
+        "test": "cd ./tests && gulp && exit 0"
     },
     "author": "Jan Andrle <andrle.jan@centrum.cz>",
     "repository": {
