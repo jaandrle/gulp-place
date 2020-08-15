@@ -3,7 +3,6 @@
     "version": "1.6.0",
     "description": "PHP require like concating syntax for gulp (primary for JavaScript files).",
     "main": "index",
-    "module": "index.mjs",
     "engines": {"node": ">= 10.0.0"},
     "scripts": {
         "test": "cd ./tests && gulp && echo '\nTests successfully passed\n'"
