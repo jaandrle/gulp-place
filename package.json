@@ -5,7 +5,8 @@
     "main": "index",
     "engines": {"node": ">= 10.0.0"},
     "scripts": {
-        "test": "cd ./tests && gulp && echo '\nTests successfully passed\n'"
+        "test": "cd ./tests && gulp && echo '\nTests successfully passed\n'",
+        "git-changelog": "node -e \"console.log('## '+require('./package.json').version);\" > CHANGELOG.md && git --no-pager log --oneline --color --pretty=\"- %s%d\" --grep=\":boom:\\|:hammer:\" >> CHANGELOG.md"
     },
     "author": "Jan Andrle <andrle.jan@centrum.cz>",
     "repository": {
