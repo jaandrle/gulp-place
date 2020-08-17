@@ -47,15 +47,15 @@ module.exports= function({ variable_eval= ()=> "", filesCleaner= content=> conte
         }
     }
     function parseJSBundle(replaceHelper, parent, folder, options, spaces){
-        const { src: src_candidate, src_file: src_file_candidate, name: name_candidate, type= "namespace", depends= [] }= JSON.parse(options) || {};
-        if(!src_candidate&&!src_file_candidate) return "";
+        const { glob: glob_candidate, file: file_candidate, name: name_candidate, type= "namespace", depends= [] }= JSON.parse(options) || {};
+        if(!glob_candidate&&!file_candidate) return "";
         let name, content_candidate;
-        if(src_file_candidate){
-            let src= fileNameVarHandler(src_file_candidate, parent);
+        if(file_candidate){
+            let src= fileNameVarHandler(file_candidate, parent);
             name= name_candidate || src.slice(src.lastIndexOf("/")+1, src.indexOf("."));
             content_candidate= fileHandler(replaceHelper, true, true, folder, src, spaces);
         } else {
-            let src= fileNameVarHandler(src_candidate, parent);
+            let src= fileNameVarHandler(glob_candidate, parent);
             name= name_candidate || getFolderName(src);
             content_candidate= processFiles(replaceHelper, true, folder, src, spaces);
         }
