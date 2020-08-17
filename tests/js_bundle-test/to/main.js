@@ -28,3 +28,15 @@
     }
     return { test, myFunction };
 }));
+
+const namespace= (function namespace_iief(){
+    function aloha(){
+        return console.log("aloha!");
+    }
+    const letter_a= "A";
+    function log(){
+        return console.log(letter_a);
+    }
+
+    return { aloha, log };
+})();

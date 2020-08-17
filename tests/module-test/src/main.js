@@ -1,1 +1,0 @@
-gulp_place('{ "src": "body.js", "name": "MyModule", "type": "module" }', "js_bundle");

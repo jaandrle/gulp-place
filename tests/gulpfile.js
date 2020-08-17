@@ -1,20 +1,14 @@
 const gulp= require("gulp");
 const gulpPlace= require("../index.js");
 
-const tests= [ "simple-test", "module-test" ];
-let task_id= 0;
-let task= tests[task_id++];
-gulp.task(task, (folder=> function(cb){
-    return gulp.src(`./${folder}/src/main.js`)
-        .pipe(gulpPlace({ variable_eval: ()=> "var output" })({ folder: `${folder}/src/`, string_wrapper: "~" }))
-        .pipe(gulp.dest(`./${folder}/bin`));
-})(task));
-
-task= tests[task_id++];
-gulp.task(task, (folder=> function(cb){
-    return gulp.src(`./${folder}/src/main.js`)
-        .pipe(gulpPlace({ variable_eval: ()=> "var output" })({ folder: `${folder}/src/`, string_wrapper: "~" }))
-        .pipe(gulp.dest(`./${folder}/bin`));
-})(task));
-
+const tests= [ "simple-test", "glob-test", "js_bundle-test" ];
+tests.forEach(taskProcess);
 gulp.task("default", gulp.series(...tests));
+
+function taskProcess(task){
+    return gulp.task(task, (folder=> function(cb){
+        return gulp.src(`./${folder}/from/main.js`)
+            .pipe(gulpPlace({ variable_eval: ()=> "var output" })({ folder: `${folder}/from/`, string_wrapper: "~" }))
+            .pipe(gulp.dest(`./${folder}/to`));
+    })(task));
+}
