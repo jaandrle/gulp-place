@@ -1,6 +1,6 @@
 {
-    "name": "@jaandtle/gulp-place",
-    "version": "1.6.3",
+    "name": "gulp-place",
+    "version": "1.6.4",
     "description": "PHP require like concating syntax for gulp (primary for JavaScript files).",
     "main": "index",
     "engines": {"node": ">= 10.0.0"},
@@ -33,7 +33,7 @@
         "jshint": "^2.10.3"
     },
     "publishConfig": {
-        "registry": "https://npm.pkg.github.com/jaandrle"
+        "registry": "https://registry.npmjs.org"
     },
     "jshintConfig": {
         "esversion": 6,
