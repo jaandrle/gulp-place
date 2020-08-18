@@ -39,7 +39,7 @@ gulp_place(target: string, type: string): string;
                 - In *module_native* nothing else will be changed
                 - Elsewhere it will be converted into "const …= …;"
                 - Keep in mind redefinition! → currently the approach is to use import in one script and others used internal names!
-        - See example [modularization-test](./test/modularization-test/) in "tests" folder.
+        - See example [modularization-test](./tests/modularization-test/) in "tests" folder.
     - "variable": Evaluate `target` with `variable_eval` and return result surrounded by `string_wrapper`.
     - "eval": Evaluate `target` with `variable_eval`. It can be used for dynamic behaviour in building process.
     - "eval_out": Evaluate `target` with `variable_eval` and return result without `string_wrapper`.
