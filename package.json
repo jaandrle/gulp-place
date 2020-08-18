@@ -1,10 +1,12 @@
 {
     "name": "gulp-place",
-    "version": "1.5.3",
+    "version": "1.6.0",
     "description": "PHP require like concating syntax for gulp (primary for JavaScript files).",
-    "main": "index.js",
+    "main": "index",
+    "engines": {"node": ">= 10.0.0"},
     "scripts": {
-        "test": "cd ./test && gulp test && exit 0"
+        "test": "cd ./tests && gulp && echo '\nTests successfully passed\n'",
+        "git-changelog": "node -e \"console.log('## '+require('./package.json').version);\" > CHANGELOG.md && git --no-pager log --oneline --color --pretty=\"- %s%d\" --grep=\":bug:\\|:boom:\\|:hammer:\" >> CHANGELOG.md"
     },
     "author": "Jan Andrle <andrle.jan@centrum.cz>",
     "repository": {
@@ -36,7 +38,7 @@
         "latedef": "true",
         "maxparams": 6,
         "maxdepth": 2,
-        "maxcomplexity": 13,
+        "maxcomplexity": 15,
         "globals": {
             "gulp_place": false
         }
