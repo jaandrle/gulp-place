@@ -28,8 +28,6 @@ jobs:
           node-version: 12
       - run: npm set registry https://registry.npmjs.org
       - run: npm set //registry.npmjs.org/:_authToken $NODE_AUTH_TOKEN
-      - run: npm ci
       - run: npm publish
-        working-directory: ./
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
