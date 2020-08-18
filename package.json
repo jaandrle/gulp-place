@@ -1,5 +1,5 @@
 {
-    "name": "gulp-place",
+    "name": "@jaandtle/gulp-place",
     "version": "1.6.0",
     "description": "PHP require like concating syntax for gulp (primary for JavaScript files).",
     "main": "index",
@@ -11,7 +11,8 @@
     "author": "Jan Andrle <andrle.jan@centrum.cz>",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/jaandrle/gulp-place.git"
+        "url": "git+https://github.com/jaandrle/gulp-place.git",
+        "directory": "@jaandrle/gulp-place"
     },
     "bugs": {
         "url": "https://github.com/jaandrle/gulp-place/issues"
@@ -30,6 +31,9 @@
     },
     "devDependencies": {
         "jshint": "^2.10.3"
+    },
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com/jaandrle"
     },
     "jshintConfig": {
         "esversion": 6,
