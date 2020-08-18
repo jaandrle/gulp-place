@@ -1,7 +1,7 @@
 
 /* global define, self */
 (function (root, factory) {
-    var depends= [];
+    var depends= ["ExternalModule"];
     var getDep;
     if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
@@ -19,8 +19,7 @@
     }
 }(typeof self !== 'undefined' ? self : this, function (/* ..._dependencies */) {
     var _dependencies= Array.prototype.slice.call(arguments);
-    /* global _dependencies */
-    console.log(_dependencies);
+    const testExternalModule= _dependencies[0];
     const private= "A";
     const test= private+"B";
     function myFunction(params) {

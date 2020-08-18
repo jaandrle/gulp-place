@@ -27,7 +27,19 @@ gulp_place(target: string, type: string): string;
     - "files_once", "glob_once": Ensure loading file once per whole initiation (means 2nd point in [Approach](#approach)).
     - "file_once": Ensure loading file once per whole initiation (means 2nd point in [Approach](#approach)).
     - "clean": Resets all `*_once`.
-    - "js_bundle" (`target` in form: `{ glob, file, name, type, depends }`): One of `glob/file` must be defined (`file` has priority) and correspodns to `glob_once/file_once`. Create [module](./templates/module.js)/[namespace](./templates/namespace.js) pattern based on `type` (namespace is default). `name` sets namespace/module name (default is file/folder name). `depend` is array of names (in case of `type='module'`).
+    - "modularization" – (`target` in JSON form: `{ glob, file, name, type, depends }`):
+        - Creates [module](./templates/module.js)/[namespace](./templates/namespace.js) pattern based on `type` ("namespace" is default). Also supports `type="module_native"`.
+        - One of `glob/file` must be defined (`file` has priority) and correspodns to `glob_once/file_once`.
+        - `name` sets namespace/module name (default is file/folder name).
+        - `depend` is object of names (in case of `type='module'`).
+        - In inported files can be used simplified **import/export** syntax:
+            - `/export (default )?(function|const|let|var|class) (?<name>…)…/g`: Expression is converted to regular definition without export/default keywords and names are exposed. Except *module_native* situation (nothing to change).
+            - `/import (\* as [^ ]+|{[^}]+}) from "depends:([^"]+)"/g`:
+                - In all "module" situation "depends:*" will be conferted based on `depends` key
+                - In *module_native* nothing else will be changed
+                - Elsewhere it will be converted into "const …= …;"
+                - Keep in mind redefinition! → currently the approach is to use import in one script and others used internal names!
+        - See example [modularization-test](./test/modularization-test/) in "tests" folder.
     - "variable": Evaluate `target` with `variable_eval` and return result surrounded by `string_wrapper`.
     - "eval": Evaluate `target` with `variable_eval`. It can be used for dynamic behaviour in building process.
     - "eval_out": Evaluate `target` with `variable_eval` and return result without `string_wrapper`.
