@@ -5,7 +5,8 @@ const path = require('path');
 
 module.exports= function({ variable_eval= ()=> "", filesCleaner= content=> content, intendantion= "    " }= {}){
     let /* shared vars */
-        files_added= new Set();
+        files_added= new Set(),
+        combine_added= new Set();
     const /* shared consts */
         gulp_place_regex= /(?<spaces> *)gulp_place\(\s*(\"(?<name_1>[^\"]+)\"|\'(?<name_2>[^\']+)\')(?:\s*,\s*(?:\"|\')(?<type>[^\"\']+)(?:\"|\'))?\s*\)(?<semicol>;?)(?<jshint_global>[^\r\n]*\/\*[^\*]*\*\/)?/g,
         folder_glob_reg= /\*\*\/$/g,
@@ -47,7 +48,10 @@ module.exports= function({ variable_eval= ()=> "", filesCleaner= content=> conte
         }
     }
     function parseJSBundle(replaceHelper, parent, folder, options, spaces_candidate){
-        const { glob: glob_candidate, file: file_candidate, name: name_candidate, type= "namespace", depends= {} }= JSON.parse(options) || {};
+        let json_object;
+        try { json_object= JSON.parse(options) || {}; }
+        catch (e){ throw new Error("WRONG JSON format in '"+folder+parent+"':\n"+options+"\n"+e.message); }
+        const { glob: glob_candidate, file: file_candidate, name: name_candidate, type= "namespace", depends= {} }= json_object;
         if(!glob_candidate&&!file_candidate) return "";
         let name, content_candidate;
         const is_native= type==="native_module"||type==="module_native";
@@ -61,7 +65,8 @@ module.exports= function({ variable_eval= ()=> "", filesCleaner= content=> conte
             name= name_candidate || getFolderName(src);
             content_candidate= processFiles(replaceHelper, true, folder, src, spaces);
         }
-        if(!content_candidate) return "";
+        if(!content_candidate||combine_added.has(name)) return "";
+        combine_added.add(name);
         if(is_native){
             return content_candidate.replace(/["']depends:([^"']+)["']/g, (match, module)=> `"${depends[module]}"`);
         }
