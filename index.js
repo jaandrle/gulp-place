@@ -46,10 +46,12 @@ module.exports= function({ variable_eval= ()=> "", filesCleaner= content=> conte
             case "eval_out":        return spaces+variable_eval(name)+semicol+jshint_global;
         }
     }
-    function parseJSBundle(replaceHelper, parent, folder, options, spaces){
-        const { glob: glob_candidate, file: file_candidate, name: name_candidate, type= "namespace", depends= [] }= JSON.parse(options) || {};
+    function parseJSBundle(replaceHelper, parent, folder, options, spaces_candidate){
+        const { glob: glob_candidate, file: file_candidate, name: name_candidate, type= "namespace", depends= {} }= JSON.parse(options) || {};
         if(!glob_candidate&&!file_candidate) return "";
         let name, content_candidate;
+        const is_native= type==="native_module"||type==="module_native";
+        const spaces= spaces_candidate+(is_native ? "" : intendantion);
         if(file_candidate){
             let src= fileNameVarHandler(file_candidate, parent);
             name= name_candidate || src.slice(src.lastIndexOf("/")+1, src.indexOf("."));
@@ -60,17 +62,21 @@ module.exports= function({ variable_eval= ()=> "", filesCleaner= content=> conte
             content_candidate= processFiles(replaceHelper, true, folder, src, spaces);
         }
         if(!content_candidate) return "";
-        const { content, exports }= parseModuleNamespaceExports(content_candidate);
-        return require("./templates/"+type)(name, content, exports, depends);
+        if(is_native){
+            return content_candidate.replace(/["']depends:([^"']+)["']/g, (match, module)=> `"${depends[module]}"`);
+        }
+        const { content, exports }= parseModuleNamespaceExports(content_candidate, Object.keys(depends));
+        return require("./templates/"+type)(name, content, exports, Object.values(depends));
     }
-    function parseModuleNamespaceExports(content_candidate){
+    function parseModuleNamespaceExports(content_candidate, depends){
         let exports= new Set();
-        const handleExportReplace= function(match, type, name){
+        const handleExportReplace= function(match, default_skip, type, name){
             exports.add(name);
             return `${type} ${name}`;
         };
         const content= content_candidate
-            .replace(/export (function|const|var|let|class) ([^ \=\-\+\(]+)/g, handleExportReplace);
+            .replace(/export (default )?(function|const|var|let|class) ([^ \=\-\+\(]+)/g, handleExportReplace)
+            .replace(/import (\* as [^ ]+|{[^}]+}) from "depends:([^"]+)"/g, (match, names, module)=> `const ${names.replace(/ as /g, ": ").replace(/\*: /g, "")}= _dependencies[${depends.indexOf(module)}]`);
         return { content, exports: Array.from(exports) };
     }
     function parseFile(replaceHelper, file_name, file_data){

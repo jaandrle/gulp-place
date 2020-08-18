@@ -1,7 +1,7 @@
 module.exports= (name, content, exports, depends)=> `
 /* global define, self */
 (function (root, factory) {
-    var depends= [${depends.join(", ")}];
+    var depends= ${JSON.stringify(depends)};
     var getDep;
     if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
