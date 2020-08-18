@@ -1,4 +1,3 @@
-
 /* global define, self */
 (function (root, factory) {
     var depends= ["ExternalModule"];
@@ -27,7 +26,6 @@
     }
     return { test, myFunction };
 }));
-
 const namespace= (function namespace_iief(){
     function aloha(){
         return console.log("aloha!");

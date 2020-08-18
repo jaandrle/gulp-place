@@ -1,5 +1,4 @@
-module.exports= (name, content, exports, depends)=> `
-/* global define, self */
+module.exports= (name, content, exports, depends)=> `/* global define, self */
 (function (root, factory) {
     var depends= ${JSON.stringify(depends)};
     var getDep;
