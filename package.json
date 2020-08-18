@@ -11,8 +11,7 @@
     "author": "Jan Andrle <andrle.jan@centrum.cz>",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/jaandrle/gulp-place.git",
-        "directory": "@jaandrle/gulp-place"
+        "url": "git+https://github.com/jaandrle/gulp-place.git"
     },
     "bugs": {
         "url": "https://github.com/jaandrle/gulp-place/issues"
