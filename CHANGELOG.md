@@ -1,4 +1,6 @@
 ## 1.6.0
+- :boom: simplified import/export support and native module support
+- :boom: "js_bundle" renamed to "modularization"
 - :rocket: `npm run git-changelog`: Changelog based on `git log`
 - :boom: `js_bundle` type for generating JS modules/namespaces
 - :boom: "doc" in readme (section [Usage examples](.README.md#usage-examples))
