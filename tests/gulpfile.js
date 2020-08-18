@@ -1,7 +1,7 @@
 const gulp= require("gulp");
 const gulpPlace= require("../index.js");
 
-const tests= [ "simple-test", "glob-test", "modularization-test" ];
+const tests= [ "simple-test", "glob-test", "combine-test" ];
 tests.forEach(taskProcess);
 gulp.task("default", gulp.series(...tests));
 

@@ -40,7 +40,7 @@ module.exports= function({ variable_eval= ()=> "", filesCleaner= content=> conte
             case "file":            return fileHandler(replaceHelper, false, true, folder, fileNameVarHandler(name, parent), spaces);
             case "file_if_exists":  return fileHandler(replaceHelper, false, false, folder, fileNameVarHandler(name, parent), spaces);
             case "file_once":       return fileHandler(replaceHelper, true, true, folder, fileNameVarHandler(name, parent), spaces);
-            case "modularization": return parseJSBundle(replaceHelper, parent, folder, nameVarHandler(name), spaces);
+            case "combine":         return parseJSBundle(replaceHelper, parent, folder, nameVarHandler(name), spaces);
             case "variable":        return spaces+string_wrapper+variable_eval(name)+string_wrapper+semicol+jshint_global;
             case "eval":            return (variable_eval(name), spaces+jshint_global);
             case "eval_out":        return spaces+variable_eval(name)+semicol+jshint_global;
