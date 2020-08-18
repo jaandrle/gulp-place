@@ -125,7 +125,7 @@ module.exports= function({ variable_eval= ()=> "", filesCleaner= content=> conte
     function fileNameVarHandler(str, parent_folder){
         const file_candidate= nameVarHandler(str);
         const [ first_letter ]= file_candidate;
-        return first_letter==="." ? path.resolve(parent_folder, file_candidate).replace(path.resolve()+"\\", "").replace(/\\/g, "/") : file_candidate;
+        return first_letter==="." ? path.resolve(parent_folder, file_candidate).replace(/\\/g, "/").replace(path.resolve().replace(/\\/g, "/")+"/", "") : file_candidate;
     }
     function nameVarHandler(str){
         if(typeof str !== "string") throw Error(`Type of '${str}' is not string!`);
