@@ -1,14 +1,14 @@
 'use strict';
 const { gulp_replace, fs, path, getFolderName, catFile, parseModuleNamespaceExports }= require("./utils");
+const /* shared consts */
+    gulp_place_regex= /(?<spaces> *)gulp_place\(\s*(\"(?<name_1>[^\"]+)\"|\'(?<name_2>[^\']+)\')(?:\s*,\s*(?:\"|\')(?<type>[^\"\']+)(?:\"|\'))?\s*\)(?<semicol>;?)(?<jshint_global>[^\r\n]*\/\*[^\*]*\*\/)?/g,
+    folder_glob_reg= /\*\*\/$/g,
+    folder_deep_glob_reg= /\*\*\/\*\*\/$/g;
 
 module.exports= function({ variable_eval= ()=> "", filesCleaner= content=> content, intendantion= "    " }= {}){
     let /* shared vars */
         files_added= new Set(),
         combine_added= new Set();
-    const /* shared consts */
-        gulp_place_regex= /(?<spaces> *)gulp_place\(\s*(\"(?<name_1>[^\"]+)\"|\'(?<name_2>[^\']+)\')(?:\s*,\s*(?:\"|\')(?<type>[^\"\']+)(?:\"|\'))?\s*\)(?<semicol>;?)(?<jshint_global>[^\r\n]*\/\*[^\*]*\*\/)?/g,
-        folder_glob_reg= /\*\*\/$/g,
-        folder_deep_glob_reg= /\*\*\/\*\*\/$/g;
     const
         processFiles= (replaceHelper, is_once, folder, name, spaces)=> 
             parseGlob(replaceHelper, is_once, folder, ((name)=>[name, name.lastIndexOf("/")+1])(nameVarHandler(name)), spaces);
