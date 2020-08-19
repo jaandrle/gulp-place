@@ -33,7 +33,7 @@ module.exports= function({ variable_eval= ()=> "", filesCleaner= content=> conte
         if(!name) return full_match;
         name= name.replace(/&prime;/g, "'").replace(/&Prime;/g, "\"").replace(/`/g, "'");
         switch (type){
-            case "clean":           return (files_added= new Set(), spaces+jshint_global);
+            case "clean":           return parseClean(nameVarHandler(name), spaces+jshint_global);
             case "files":
             case "glob":            return processFiles(replaceHelper, false, folder, fileNameVarHandler(name, parent), spaces);
             case "files_once":
@@ -46,6 +46,16 @@ module.exports= function({ variable_eval= ()=> "", filesCleaner= content=> conte
             case "eval":            return (variable_eval(name), spaces+jshint_global);
             case "eval_out":        return spaces+variable_eval(name)+semicol+jshint_global;
         }
+    }
+    function parseClean(name, out){
+        if(name==="all"){
+            files_added= new Set();
+            combine_added= new Set();
+        } else {
+            files_added.delete(name);
+            combine_added.delete(name);
+        }
+        return out;
     }
     function parseJSBundle(replaceHelper, parent, folder, options, spaces_candidate){
         let json_object;
