@@ -1,7 +1,5 @@
 'use strict';
-const gulp_replace= require('gulp-replace');
-const fs= require('fs');
-const path = require('path');
+const { gulp_replace, fs, path, getFolderName, catFile, parseModuleNamespaceExports }= require("./utils");
 
 module.exports= function({ variable_eval= ()=> "", filesCleaner= content=> content, intendantion= "    " }= {}){
     let /* shared vars */
@@ -12,11 +10,6 @@ module.exports= function({ variable_eval= ()=> "", filesCleaner= content=> conte
         folder_glob_reg= /\*\*\/$/g,
         folder_deep_glob_reg= /\*\*\/\*\*\/$/g;
     const
-        getFolderName= function(path){
-            const last_slash= path.lastIndexOf("/");
-            const folder_start= path.lastIndexOf("/", last_slash-1)+1;
-            return path.slice(folder_start, last_slash);
-        },
         processFiles= (replaceHelper, is_once, folder, name, spaces)=> 
             parseGlob(replaceHelper, is_once, folder, ((name)=>[name, name.lastIndexOf("/")+1])(nameVarHandler(name)), spaces);
     
@@ -83,17 +76,6 @@ module.exports= function({ variable_eval= ()=> "", filesCleaner= content=> conte
         const { content, exports }= parseModuleNamespaceExports(content_candidate, Object.keys(depends));
         return require("./templates/"+type)(name, content, exports, Object.values(depends));
     }
-    function parseModuleNamespaceExports(content_candidate, depends){
-        let exports= new Set();
-        const handleExportReplace= function(match, default_skip, type, name){
-            exports.add(name);
-            return `${type} ${name}`;
-        };
-        const content= content_candidate
-            .replace(/export (default )?(function|const|var|let|class) ([^ \=\-\+\(]+)/g, handleExportReplace)
-            .replace(/import (\* as [^ ]+|{[^}]+}) from "depends:([^"]+)"/g, (match, names, module)=> `const ${names.replace(/ as /g, ": ").replace(/\*: /g, "")}= _dependencies[${depends.indexOf(module)}]`);
-        return { content, exports: Array.from(exports) };
-    }
     function parseFile(replaceHelper, file_name, file_data){
         const last_slash= file_name.lastIndexOf("/");
         return file_data.replace(gulp_place_regex, replaceHelper(last_slash===-1 ? "" : file_name.slice(0, last_slash), parseFileHandler));
@@ -139,15 +121,6 @@ module.exports= function({ variable_eval= ()=> "", filesCleaner= content=> conte
     }
     function nameVarHandler(str){
         if(typeof str !== "string") throw Error(`Type of '${str}' is not string!`);
-    }
-    function catFile(file, strict){
-        try{
-            return fs.readFileSync(file, 'utf8');
-        }catch(e){
-            if(!strict) return "";
-            console.error(`File '${e.path}' cannot be found!`);
-            return "/* ERROR: NO FILE FOUND!!! */";
-        }
         return str.replace(/\$\{([\s]*[^;\s\{\}]+[\s]*)\}/g, (_, match)=> variable_eval(match));
     }
 };
