@@ -17,6 +17,7 @@ module.exports= (name, content, exports, depends)=> `/* global define, self */
         root.${name} = factory.apply(root, depends.map(getDep));
     }
 }(typeof self !== 'undefined' ? self : this, function (/* ..._dependencies */) {
+    "use strict";
     var _dependencies= Array.prototype.slice.call(arguments);
 ${content}
     return { ${exports.join(", ")} };

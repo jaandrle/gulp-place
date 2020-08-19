@@ -22,6 +22,7 @@ const log= console.log.bind(console);
 var routers= {};
 
 const namespace= (function namespace_iief(){
+    "use strict";
     const text= "Exported text";
     
     function a(val){

@@ -17,16 +17,18 @@
         root.MyModule = factory.apply(root, depends.map(getDep));
     }
 }(typeof self !== 'undefined' ? self : this, function (/* ..._dependencies */) {
+    "use strict";
     var _dependencies= Array.prototype.slice.call(arguments);
     const testExternalModule= _dependencies[0];
-    const private= "A";
-    const test= private+"B";
+    const _private= "A";
+    const test= _private+"B";
     function myFunction(params) {
         console.log(test);
     }
     return { test, myFunction };
 }));
 const namespace= (function namespace_iief(){
+    "use strict";
     function aloha(){
         return console.log("aloha!");
     }
