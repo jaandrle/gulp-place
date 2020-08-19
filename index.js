@@ -139,7 +139,6 @@ module.exports= function({ variable_eval= ()=> "", filesCleaner= content=> conte
     }
     function nameVarHandler(str){
         if(typeof str !== "string") throw Error(`Type of '${str}' is not string!`);
-        return str.replace(/\$\{([\s]*[^;\s\{]+[\s]*)\}/g, (_, match)=> variable_eval(match));
     }
     function catFile(file, strict){
         try{
@@ -149,5 +148,6 @@ module.exports= function({ variable_eval= ()=> "", filesCleaner= content=> conte
             console.error(`File '${e.path}' cannot be found!`);
             return "/* ERROR: NO FILE FOUND!!! */";
         }
+        return str.replace(/\$\{([\s]*[^;\s\{\}]+[\s]*)\}/g, (_, match)=> variable_eval(match));
     }
 };
