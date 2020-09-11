@@ -1,5 +1,6 @@
-/* global define, self */
+/* global self */
 (function (root, factory) {
+    /* jshint ignore:start */
     var depends= ["ExternalModule"];
     var getDep;
     if (typeof define === 'function' && define.amd) {
@@ -16,6 +17,7 @@
         getDep= function(name){ return root[name]; };
         root.MyModule = factory.apply(root, depends.map(getDep));
     }
+    /* jshint ignore:end */
 }(typeof self !== 'undefined' ? self : this, function (/* ..._dependencies */) {
     "use strict";
     var _dependencies= Array.prototype.slice.call(arguments);

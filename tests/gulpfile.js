@@ -3,7 +3,7 @@ const { readFileSync }= require("fs");
 const gulpPlace= require("../index.js");
 class TestError extends Error{ constructor(tests_statuses){ super("\nTest(s) failed\n"+tests_statuses.join("\n").replace(/^/mg, "  - ")); this.showStack = false; } static create(tests_statuses){ return new TestError(tests_statuses); } }
 
-const tests= [ "simple-test", "glob-test", "combine-test", "complex-test" ];
+const tests= [ "simple-test", "glob-test", "combine-test", "exports-test", "complex-test" ];
 const tests_export= tests.reduce(registerTestTask, {});
 Object.assign(exports, tests_export);
 exports.compare= compare;
