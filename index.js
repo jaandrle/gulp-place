@@ -72,7 +72,7 @@ module.exports= function({ variable_eval= ()=> "", filesCleaner= content=> conte
         if(!content_candidate||combine_added.has(name)) return "";
         combine_added.add(name);
         if(is_native){
-            return content_candidate.replace(/["']depends:([^"']+)["']/g, (match, module)=> `"${depends[module]}"`);
+            return content_candidate.replace(/["']depends:([^"']+)["']/g, (match, module)=> `"${module}"`);
         }
         const { content, exports }= parseModuleNamespaceExports(content_candidate, Object.keys(depends));
         return spaces_candidate+require("./templates/"+type)(name, content, use_strict, exports, Object.values(depends)).replace(/\r?\n/gm, "\n"+spaces_candidate);
