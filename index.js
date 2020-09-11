@@ -5,7 +5,7 @@ const /* shared consts */
     folder_glob_reg= /\*\*\/$/g,
     folder_deep_glob_reg= /\*\*\/\*\*\/$/g;
 
-module.exports= function({ variable_eval= ()=> "", filesCleaner= content=> content, intendantion= "    " }= {}){
+module.exports= function({ variable_eval= ()=> "", filesCleaner= content=> content, intendantion= "    ", old_primes= true }= {}){
     let /* shared vars */
         files_added= new Set(),
         combine_added= new Set();
@@ -24,7 +24,8 @@ module.exports= function({ variable_eval= ()=> "", filesCleaner= content=> conte
     };
     function parseFileHandler({ parent, folder, name, full_match, type, spaces, string_wrapper, semicol, jshint_global, replaceHelper }){
         if(!name) return full_match;
-        name= name.replace(/&prime;/g, "'").replace(/&Prime;/g, "\"").replace(/`/g, "'");
+        if(old_primes)
+            name= name.replace(/&prime;/g, "'").replace(/&Prime;/g, "\"").replace(/`/g, "'");
         switch (type){
             case "clean":           return parseClean(nameVarHandler(name), spaces+jshint_global);
             case "files":
