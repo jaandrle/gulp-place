@@ -1,5 +1,6 @@
-module.exports= (name, content, exports, depends)=> `/* global define, self */
+module.exports= (name, content, use_strict, exports, depends)=> `/* global self */
 (function (root, factory) {
+    /* jshint ignore:start */
     var depends= ${JSON.stringify(depends)};
     var getDep;
     if (typeof define === 'function' && define.amd) {
@@ -16,8 +17,8 @@ module.exports= (name, content, exports, depends)=> `/* global define, self */
         getDep= function(name){ return root[name]; };
         root.${name} = factory.apply(root, depends.map(getDep));
     }
-}(typeof self !== 'undefined' ? self : this, function (/* ..._dependencies */) {
-    "use strict";
+    /* jshint ignore:end */
+}(typeof self !== 'undefined' ? self : this, function (/* ..._dependencies */) {${use_strict?'\n    "use strict";':""}
     var _dependencies= Array.prototype.slice.call(arguments);
 ${content}
     return { ${exports.join(", ")} };

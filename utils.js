@@ -17,12 +17,16 @@ function catFile(file, strict){
 }
 function parseModuleNamespaceExports(content_candidate, depends){
     let exports= new Set();
-    const handleExportReplace= function(match, default_skip, type, name){
-        exports.add(name);
-        return `${type} ${name}`;
+    const handleExportReplace= fun=> function(...args){
+        const reg_found= args.pop();
+        let { name, names }=reg_found;
+        if(name) exports.add(name);
+        if(names) names.split(/ ?, ?/).map(t=> t.replace(/(\w+) as (\w+)/, (_m, internal, name)=> `${name}: ${internal}`)).forEach(name=> exports.add(name.trim()));
+        return fun(reg_found);
     };
     const content= content_candidate
-        .replace(/export (default )?(function|const|var|let|class) ([^ \=\-\+\(]+)/g, handleExportReplace)
+        .replace(/export (default )?(?<type>function|function\*|const|var|let|class) (?<name>[^ \=\-\+\(\{}]+)/g, handleExportReplace(({ name, type })=> `${type} ${name}`))
+        .replace(/\r?\n?\s*export \{\s*(?<names>[^\}]+)\s*\};/mg, handleExportReplace(()=> ""))
         .replace(/import (\* as [^ ]+|{[^}]+}) from "depends:([^"]+)"/g, (match, names, module)=> `const ${names.replace(/ as /g, ": ").replace(/\*: /g, "")}= _dependencies[${depends.indexOf(module)}]`);
     return { content, exports: Array.from(exports) };
 }

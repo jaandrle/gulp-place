@@ -1,5 +1,6 @@
-/* global define, self */
+/* global self */
 (function (root, factory) {
+    /* jshint ignore:start */
     var depends= ["ExternalModule"];
     var getDep;
     if (typeof define === 'function' && define.amd) {
@@ -16,16 +17,28 @@
         getDep= function(name){ return root[name]; };
         root.MyModule = factory.apply(root, depends.map(getDep));
     }
+    /* jshint ignore:end */
 }(typeof self !== 'undefined' ? self : this, function (/* ..._dependencies */) {
     "use strict";
     var _dependencies= Array.prototype.slice.call(arguments);
     const testExternalModule= _dependencies[0];
+    const MyModule_namespace= (function MyModule_namespace_iief(){
+        function aloha(){
+            return console.log("aloha!");
+        }
+        const letter_a= "A";
+        function log(){
+            return console.log(letter_a);
+        }
+    
+        return { aloha, log };
+    })();
     const _private= "A";
     const test= _private+"B";
     function myFunction(params) {
         console.log(test);
     }
-    return { test, myFunction };
+    return { test, myFunction, namespace: MyModule_namespace };
 }));
 const namespace= (function namespace_iief(){
     "use strict";

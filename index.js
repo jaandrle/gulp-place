@@ -5,7 +5,7 @@ const /* shared consts */
     folder_glob_reg= /\*\*\/$/g,
     folder_deep_glob_reg= /\*\*\/\*\*\/$/g;
 
-module.exports= function({ variable_eval= ()=> "", filesCleaner= content=> content, intendantion= "    " }= {}){
+module.exports= function({ variable_eval= ()=> "", filesCleaner= content=> content, intendantion= "    ", old_primes= true }= {}){
     let /* shared vars */
         files_added= new Set(),
         combine_added= new Set();
@@ -24,7 +24,8 @@ module.exports= function({ variable_eval= ()=> "", filesCleaner= content=> conte
     };
     function parseFileHandler({ parent, folder, name, full_match, type, spaces, string_wrapper, semicol, jshint_global, replaceHelper }){
         if(!name) return full_match;
-        name= name.replace(/&prime;/g, "'").replace(/&Prime;/g, "\"").replace(/`/g, "'");
+        if(old_primes)
+            name= name.replace(/&prime;/g, "'").replace(/&Prime;/g, "\"").replace(/`/g, "'");
         switch (type){
             case "clean":           return parseClean(nameVarHandler(name), spaces+jshint_global);
             case "files":
@@ -54,11 +55,11 @@ module.exports= function({ variable_eval= ()=> "", filesCleaner= content=> conte
         let json_object;
         try { json_object= JSON.parse(options) || {}; }
         catch (e){ throw new Error("WRONG JSON format in '"+folder+parent+"':\n"+options+"\n"+e.message); }
-        const { glob: glob_candidate, file: file_candidate, name: name_candidate, type= "namespace", depends= {} }= json_object;
+        const { glob: glob_candidate, file: file_candidate, name: name_candidate, type= "namespace", depends= {}, use_strict= true }= json_object;
         if(!glob_candidate&&!file_candidate) return "";
         let name, content_candidate;
         const is_native= type==="native_module"||type==="module_native";
-        const spaces= spaces_candidate+(is_native ? "" : intendantion);
+        const spaces= is_native ? "" : intendantion;
         if(file_candidate){
             let src= fileNameVarHandler(file_candidate, parent);
             name= name_candidate || src.slice(src.lastIndexOf("/")+1, src.indexOf("."));
@@ -71,10 +72,10 @@ module.exports= function({ variable_eval= ()=> "", filesCleaner= content=> conte
         if(!content_candidate||combine_added.has(name)) return "";
         combine_added.add(name);
         if(is_native){
-            return content_candidate.replace(/["']depends:([^"']+)["']/g, (match, module)=> `"${depends[module]}"`);
+            return content_candidate.replace(/["']depends:([^"']+)["']/g, (match, module)=> `"${module}"`);
         }
         const { content, exports }= parseModuleNamespaceExports(content_candidate, Object.keys(depends));
-        return require("./templates/"+type)(name, content, exports, Object.values(depends));
+        return spaces_candidate+require("./templates/"+type)(name, content, use_strict, exports, Object.values(depends)).replace(/\r?\n/gm, "\n"+spaces_candidate);
     }
     function parseFile(replaceHelper, file_name, file_data){
         const last_slash= file_name.lastIndexOf("/");

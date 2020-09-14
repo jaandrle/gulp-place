@@ -1,0 +1,1 @@
+gulp_place('{ "glob": "namespace/*.*" }', "combine");
