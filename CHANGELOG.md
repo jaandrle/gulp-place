@@ -1,3 +1,12 @@
+## 1.8.2
+- :boom: providing experimental types
+- :boom: experimental `internal_namespace`
+- :hammer: global consts moved to root
+- :hammer: global functions moved into "./utils"
+- :boom: "use strict" in "combine"
+- :bug: Correct `${}` handler fixes #3
+- :bug: `gulp_place(…,"clean")` fixes #2
+- Tests + very small refactoring + "combine" feature (#1) (tag: v1.6.0)
 ## 1.8.0
 - :hammer: global consts moved to root
 - :hammer: global functions moved into "./utils"
