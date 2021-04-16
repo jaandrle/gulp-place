@@ -27,18 +27,19 @@ module.exports= function({ variable_eval= ()=> "", filesCleaner= content=> conte
         if(old_primes)
             name= name.replace(/&prime;/g, "'").replace(/&Prime;/g, "\"").replace(/`/g, "'");
         switch (type){
-            case "clean":           return parseClean(nameVarHandler(name), spaces+jshint_global);
+            case "clean":                   return parseClean(nameVarHandler(name), spaces+jshint_global);
             case "files":
-            case "glob":            return processFiles(replaceHelper, false, folder, fileNameVarHandler(name, parent), spaces);
+            case "glob":                    return processFiles(replaceHelper, false, folder, fileNameVarHandler(name, parent), spaces);
             case "files_once":
-            case "glob_once":       return processFiles(replaceHelper, true, folder, fileNameVarHandler(name, parent), spaces);
-            case "file":            return fileHandler(replaceHelper, false, true, folder, fileNameVarHandler(name, parent), spaces);
-            case "file_if_exists":  return fileHandler(replaceHelper, false, false, folder, fileNameVarHandler(name, parent), spaces);
-            case "file_once":       return fileHandler(replaceHelper, true, true, folder, fileNameVarHandler(name, parent), spaces);
-            case "combine":         return parseJSBundle(replaceHelper, parent, folder, nameVarHandler(name), spaces);
-            case "variable":        return spaces+string_wrapper+variable_eval(name)+string_wrapper+semicol+jshint_global;
-            case "eval":            return (variable_eval(name), spaces+jshint_global);
-            case "eval_out":        return spaces+variable_eval(name)+semicol+jshint_global;
+            case "glob_once":               return processFiles(replaceHelper, true, folder, fileNameVarHandler(name, parent), spaces);
+            case "file":                    return fileHandler(replaceHelper, false, true, folder, fileNameVarHandler(name, parent), spaces);
+            case "file_if_exists":          return fileHandler(replaceHelper, false, false, folder, fileNameVarHandler(name, parent), spaces);
+            case "file_once":               return fileHandler(replaceHelper, true, true, folder, fileNameVarHandler(name, parent), spaces);
+            case "combine":                 return parseJSBundle(replaceHelper, parent, folder, nameVarHandler(name), spaces);
+            case "internal_namespace":      return parseJSBundle(replaceHelper, parent, folder, `{ "file": "${nameVarHandler(name)}", "use_strict": false }`, spaces);
+            case "variable":                return spaces+string_wrapper+variable_eval(name)+string_wrapper+semicol+jshint_global;
+            case "eval":                    return (variable_eval(name), spaces+jshint_global);
+            case "eval_out":                return spaces+variable_eval(name)+semicol+jshint_global;
         }
     }
     function parseClean(name, out){
@@ -71,9 +72,8 @@ module.exports= function({ variable_eval= ()=> "", filesCleaner= content=> conte
         }
         if(!content_candidate||combine_added.has(name)) return "";
         combine_added.add(name);
-        if(is_native){
-            return content_candidate.replace(/["']depends:([^"']+)["']/g, (match, module)=> `"${module}"`);
-        }
+        if(is_native)
+            return content_candidate.replace(/["']depends:([^"']+)["']/g, (_, module)=> `"${module}"`);
         const { content, exports }= parseModuleNamespaceExports(content_candidate, Object.keys(depends));
         return spaces_candidate+require("./templates/"+type)(name, content, use_strict, exports, Object.values(depends)).replace(/\r?\n/gm, "\n"+spaces_candidate);
     }
