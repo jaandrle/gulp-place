@@ -1,6 +1,6 @@
 {
     "name": "gulp-place",
-    "version": "1.8.3",
+    "version": "1.8.4",
     "description": "PHP require like concating syntax for gulp (primary for JavaScript files).",
     "main": "index",
     "engines": {
