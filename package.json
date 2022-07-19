@@ -1,6 +1,6 @@
 {
     "name": "gulp-place",
-    "version": "1.8.5",
+    "version": "1.8.6",
     "description": "PHP require like concating syntax for gulp (primary for JavaScript files).",
     "main": "index",
     "engines": {
@@ -8,9 +8,7 @@
     },
     "scripts": {
         "test": "cd ./tests && gulp && cd ../ && echo '\nTests successfully passed\n'",
-        "git-changelog": "node -e \"console.log('## '+require('./package.json').version);\" > CHANGELOG.md && git --no-pager log --oneline --color --pretty=\"- %s%d\" --grep=\":bug:\\|:boom:\\|:hammer:\" >> CHANGELOG.md",
-        "publish": "npm set //registry.npmjs.org/:_authToken",
-        "postpublish": "npm publish"
+        "git-changelog": "node -e \"console.log('## '+require('./package.json').version);\" > CHANGELOG.md && git --no-pager log --oneline --color --pretty=\"- %s%d\" --grep=\":bug:\\|:boom:\\|:hammer:\" >> CHANGELOG.md"
     },
     "author": "Jan Andrle <andrle.jan@centrum.cz>",
     "repository": {

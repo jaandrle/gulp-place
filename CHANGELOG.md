@@ -1,3 +1,6 @@
+## 1.8.6
+- :bug: Allow `\t` for indentation (HEAD -> master, origin/master, origin/HEAD)
+
 ## 1.8.2
 - :boom: providing experimental types
 - :boom: experimental `internal_namespace`
