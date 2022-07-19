@@ -1,7 +1,7 @@
 'use strict';
 const { gulp_replace, fs, path, getFolderName, catFile, parseModuleNamespaceExports }= require("./utils");
 const /* shared consts */
-    gulp_place_regex= /(?<spaces> *)gulp_place\(\s*(\"(?<name_1>[^\"]+)\"|\'(?<name_2>[^\']+)\')(?:\s*,\s*(?:\"|\')(?<type>[^\"\']+)(?:\"|\'))?\s*\)(?<semicol>;?)(?<jshint_global>[^\r\n]*\/\*[^\*]*\*\/)?/g,
+    gulp_place_regex= /(?<spaces>( |\t)*)gulp_place\(\s*(\"(?<name_1>[^\"]+)\"|\'(?<name_2>[^\']+)\')(?:\s*,\s*(?:\"|\')(?<type>[^\"\']+)(?:\"|\'))?\s*\)(?<semicol>;?)(?<jshint_global>[^\r\n]*\/\*[^\*]*\*\/)?/g,
     folder_glob_reg= /\*\*\/$/g,
     folder_deep_glob_reg= /\*\*\/\*\*\/$/g;
 
